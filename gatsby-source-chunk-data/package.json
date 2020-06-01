@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/PaulieScanlon/gatsby-source-chunk-data/issues"
   },
-  "homepage": "https://github.com/PaulieScanlon/gatsby-source-chunk-data#readme"
+  "homepage": "https://github.com/PaulieScanlon/gatsby-source-chunk-data#readme",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
 }
