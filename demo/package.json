@@ -1,0 +1,29 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "Demo app for gatsby-source-chunk-data",
+  "main": "index.js",
+  "scripts": {
+    "develop": "gatsby develop",
+    "clean": "gatsby clean",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulieScanlon/gatsby-source-chunk-data.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PaulieScanlon/gatsby-source-chunk-data/issues"
+  },
+  "homepage": "https://github.com/PaulieScanlon/gatsby-source-chunk-data#readme",
+  "dependencies": {
+    "gatsby-source-chunk-data": "*",
+    "gatsby": "^2.22.15",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
