@@ -2,6 +2,10 @@
 
 Test plugin to chunk data sourced from fake object. `demo` is the application, `gatsby-source-chunk-data` is the plugin.
 
+## Demo
+
+https://gatsby-source-chunk-data.netlify.app/
+
 See `source` options in `demo/gatsby.config.js`
 
 ## Get Started
