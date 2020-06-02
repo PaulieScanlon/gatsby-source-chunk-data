@@ -21,8 +21,9 @@
   },
   "homepage": "https://github.com/PaulieScanlon/gatsby-source-chunk-data#readme",
   "dependencies": {
-    "gatsby-source-chunk-data": "*",
+    "axios": "^0.19.2",
     "gatsby": "^2.22.15",
+    "gatsby-source-chunk-data": "*",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

@@ -103,5 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
+# Gatsby
+public
+
 # Dev refs
 refs.md

@@ -3,9 +3,13 @@ module.exports = {
     {
       resolve: `gatsby-source-chunk-data`,
       options: {
-        source: `${__dirname}/src/data/data.json`,
+        /** Only required for page query */
         template: `${__dirname}/src/templates/YotpoTemplate.js`,
-        pageSize: 50,
+        // --
+        source: `${__dirname}/src/data/data.json`,
+        // source: `${__dirname}/src/data/data-short.json`,
+        pageSize: 100,
+        name: "chunk",
       },
     },
   ],

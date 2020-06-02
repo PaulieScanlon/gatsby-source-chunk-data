@@ -1,6 +1,31 @@
 const fs = require("fs");
 const _ = require("lodash");
 
+exports.onPreBuild = ({}, options) => {
+  const { source, name, pageSize } = options;
+
+  const PAGE_SIZE = pageSize || 100;
+
+  const data = JSON.parse(fs.readFileSync(source));
+
+  let chunks = _.chunk(data, PAGE_SIZE);
+
+  chunks.forEach((chunk, index) => {
+    const chunkNumber = index + 1;
+    fs.writeFileSync(
+      `public/static/${name}-data-${chunkNumber}.json`,
+      `${JSON.stringify(chunk)}`,
+      () => {}
+    );
+  });
+
+  fs.writeFileSync(
+    `public/static/${name}-config.json`,
+    `{"length": ${chunks.length}}`,
+    () => {}
+  );
+};
+
 exports.onCreateNode = ({ actions }, options) => {
   const { createNode, createPage } = actions;
   const { source, template, pageSize } = options;
