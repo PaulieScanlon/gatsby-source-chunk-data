@@ -1,5 +1,5 @@
 const fs = require("fs");
-const _ = require("lodash");
+const chunk = require("lodash.chunk");
 
 exports.onPreBuild = ({}, options) => {
   const { src, out, chunkSize } = options;
@@ -10,7 +10,7 @@ exports.onPreBuild = ({}, options) => {
 
   // Write / name a dir by product id  + config and data by chunk size
   Object.keys(srcData).forEach((productId) => {
-    let chunks = _.chunk(srcData[productId], CHUNK_SIZE);
+    let chunks = chunk(srcData[productId], CHUNK_SIZE);
     let chunkPath = `${out}/${productId}`;
     fs.mkdir(chunkPath, { recursive: true }, (err) => {
       if (err) throw err;
