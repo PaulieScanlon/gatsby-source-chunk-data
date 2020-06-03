@@ -2,73 +2,38 @@ const fs = require("fs");
 const _ = require("lodash");
 
 exports.onPreBuild = ({}, options) => {
-  const { source, name, pageSize } = options;
+  const { src, out, chunkSize } = options;
 
-  const PAGE_SIZE = pageSize || 100;
+  const CHUNK_SIZE = chunkSize || 100;
 
-  const data = JSON.parse(fs.readFileSync(source));
+  const srcData = JSON.parse(fs.readFileSync(src));
 
-  let chunks = _.chunk(data, PAGE_SIZE);
+  // Write / name a dir by product id  + config and data by chunk size
+  Object.keys(srcData).forEach((productId) => {
+    let chunks = _.chunk(srcData[productId], CHUNK_SIZE);
+    let chunkPath = `${out}/${productId}`;
+    fs.mkdir(chunkPath, { recursive: true }, (err) => {
+      if (err) throw err;
 
-  chunks.forEach((chunk, index) => {
-    const chunkNumber = index + 1;
-    fs.writeFileSync(
-      `public/static/${name}-data-${chunkNumber}.json`,
-      `${JSON.stringify(chunk)}`,
-      () => {}
-    );
-  });
+      // Write a config to store the chuunk length per product id
+      fs.writeFileSync(
+        `${chunkPath}/config.json`,
+        `{"chunkLength": ${chunks.length}, "chunkSize" : ${CHUNK_SIZE}, "chunkTotal": ${srcData[productId].length}}`,
+        (err) => {
+          if (err) throw err;
+        }
+      );
 
-  fs.writeFileSync(
-    `public/static/${name}-config.json`,
-    `{"length": ${chunks.length}}`,
-    () => {}
-  );
-};
-
-exports.onCreateNode = ({ actions }, options) => {
-  const { createNode, createPage } = actions;
-  const { source, template, pageSize } = options;
-
-  const PAGE_SIZE = pageSize || 100;
-
-  const data = JSON.parse(fs.readFileSync(source));
-
-  let chunks = _.chunk(data, PAGE_SIZE);
-
-  data.forEach((obj) => {
-    const { id, first_name, last_name, email } = obj;
-    createNode({
-      id: `yotpo-${id}`,
-      name: `${first_name} ${last_name}`,
-      email: email,
-      parent: null,
-      children: [],
-      internal: {
-        type: `yotpo`,
-        contentDigest: "data",
-      },
-    });
-  });
-
-  chunks.forEach((_, index) => {
-    const pageNumber = index + 1;
-    createPage({
-      path: `yotpo/${pageNumber}`,
-      component: template,
-      context: {
-        skip: PAGE_SIZE * index,
-        limit: PAGE_SIZE,
-        pageNumber: pageNumber,
-        pages: chunks.map((_, index) => {
-          const number = index + 1;
-          return {
-            pageNumber: number,
-            link: `/yotpo/${number}`,
-            isCurrent: number === pageNumber ? true : false,
-          };
-        }),
-      },
+      // Write the json that contains the chunked data
+      chunks.forEach((chunk, index) => {
+        fs.writeFileSync(
+          `${chunkPath}/${index}.json`,
+          `${JSON.stringify(chunk)}`,
+          (err) => {
+            if (err) throw err;
+          }
+        );
+      });
     });
   });
 };
